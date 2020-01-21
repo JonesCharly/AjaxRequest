@@ -37,8 +37,29 @@
     </section>
 
     <!-- We need to load axios first! -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="ChuckTemplate.js"></script>
+    <script>
+      function fetchChuckJSON() {
+        // Feel free to download this HTML and edit it, to use another Pokemon ID
+        const url = `https://api.chucknorris.io/jokes/random`;
+        axios
+          .get(url)
+          .then(function(response) {
+            return response.data; // SUBTLE difference with Fetch: response.data instead of response.json()
+          })
+          .then(function(quote) {
+            console.log("data decoded from JSON:", quote);
+
+            // Build a block of HTML
+            const quoteHtml = `
+        <p><strong>${quote.value}</strong></p>
+        <img src="${quote.icon_url}" />
+      `;
+            document.querySelector("#quote").innerHTML = quoteHtml;
+          });
+      }
+
+      fetchChuckJSON();
+    </script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"
       integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs="
